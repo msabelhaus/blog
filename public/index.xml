@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Margaret Sabelhaus</title>
+    <link>https://example.com/</link>
+    <description>Recent content on Margaret Sabelhaus</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Thu, 28 Apr 2022 21:13:14 -0500</lastBuildDate><atom:link href="https://example.com/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Forecasting Energy Demand Using a Long Short-Term Memory Network</title>
+      <link>https://example.com/post/2022-04-28-load-forecasting/load-forecasting/</link>
+      <pubDate>Thu, 28 Apr 2022 21:13:14 -0500</pubDate>
+      
+      <guid>https://example.com/post/2022-04-28-load-forecasting/load-forecasting/</guid>
+      
+        <description>An application of an LSTM network to a real-world time series problem</description>
+      
+    </item>
+    
+    <item>
+      <title>Awards</title>
+      <link>https://example.com/awards/</link>
+      <pubDate>Sun, 10 Apr 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://example.com/awards/</guid>
+      
+        <description>Hugo Awards, an annual literary award for the best science fiction or fantasy works</description>
+      
+    </item>
+    
+    <item>
+      <title>Certifications</title>
+      <link>https://example.com/certifications/</link>
+      <pubDate>Sun, 10 Apr 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://example.com/certifications/</guid>
+      
+        <description>Hugo Certifications</description>
+      
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://example.com/resume/</link>
+      <pubDate>Tue, 08 Mar 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://example.com/resume/</guid>
+      
+        <description>  </description>
+      
+    </item>
+    
+    <item>
+      <title>About</title>
+      <link>https://example.com/about/</link>
+      <pubDate>Tue, 08 Mar 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://example.com/about/</guid>
+      
+        <description>I&amp;rsquo;m Margaret, a graduate student in Data Science at Colorado School of Mines (completing May 2022).</description>
+      
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://example.com/archives/</link>
+      <pubDate>Tue, 28 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://example.com/archives/</guid>
+      
+        <description></description>
+      
+    </item>
+    
+    <item>
+      <title>Contact</title>
+      <link>https://example.com/contact/</link>
+      <pubDate>Fri, 08 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://example.com/contact/</guid>
+      
+        <description>Contact Page</description>
+      
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://example.com/imprint/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://example.com/imprint/</guid>
+      
+        <description>Legal Disclosure Information in accordance with the applicable law
+Margaret Sabelhaus</description>
+      
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on Margaret Sabelhaus</title>
+    <link>https://example.com/post/</link>
+    <description>Recent content in Posts on Margaret Sabelhaus</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Thu, 28 Apr 2022 21:13:14 -0500</lastBuildDate><atom:link href="https://example.com/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Forecasting Energy Demand Using a Long Short-Term Memory Network</title>
+      <link>https://example.com/post/2022-04-28-load-forecasting/load-forecasting/</link>
+      <pubDate>Thu, 28 Apr 2022 21:13:14 -0500</pubDate>
+      
+      <guid>https://example.com/post/2022-04-28-load-forecasting/load-forecasting/</guid>
+      
+        <description>An application of an LSTM network to a real-world time series problem</description>
+      
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html
+  dir="ltr"
+  lang="en"
+  data-theme=""
+  class="html"
+><head>
+  <title>
+    
+      
+        Forecasting Energy Demand Using a Long Short-Term Memory Network |
+
+      
+      Margaret Sabelhaus
+
+
+    
+  </title>
+
+  
+  <meta charset="utf-8" /><meta name="generator" content="Hugo 0.84.2" /><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="author" content="Margaret Sabelhaus" />
+  <meta
+    name="description"
+    content="
+      Data Scientist based in Denver, CO.
+
+
+    "
+  />
+  
+  
+    
+    
+    <link
+      rel="stylesheet"
+      href="/scss/main.min.b2e0cb07595e3519ab1193bb421914e06c0e26b0cc561fef23b3c6131d4d2ffa.css"
+      integrity="sha256-suDLB1leNRmrEZO7QhkU4GwOJrDMVh/vI7PGEx1NL/o="
+      crossorigin="anonymous"
+      type="text/css"
+    />
+
+  
+
+  
+  <link
+    rel="stylesheet"
+    href="/css/markupHighlight.min.31b0a1f317f55c529a460897848c97436bb138b19c399b37de70d463a8bf6ed5.css"
+    integrity="sha256-MbCh8xf1XFKaRgiXhIyXQ2uxOLGcOZs33nDUY6i/btU="
+    crossorigin="anonymous"
+    type="text/css"
+  />
+  
+  
+  <link
+    rel="stylesheet"
+    href="/fontawesome/css/fontawesome.min.b1c4e6a10bdbab01f33fff9d78816ee68cf9a9a731f07668afd546a79924cb80.css"
+    integrity="sha256-scTmoQvbqwHzP/&#43;deIFu5oz5qacx8HZor9VGp5kky4A="
+    crossorigin="anonymous"
+    type="text/css"
+  />
+  
+  <link
+    rel="stylesheet"
+    href="/fontawesome/css/solid.min.423dee17c62f55fa733a4ee13e00d523dfce88cc4f4ab4549a24ba36bd9de681.css"
+    integrity="sha256-Qj3uF8YvVfpzOk7hPgDVI9/OiMxPSrRUmiS6Nr2d5oE="
+    crossorigin="anonymous"
+    type="text/css"
+  />
+  
+  <link
+    rel="stylesheet"
+    href="/fontawesome/css/brands.min.b7d54133b27e5b4de15245b8e143de3e8ed2d674c706137274cedc9953f31917.css"
+    integrity="sha256-t9VBM7J&#43;W03hUkW44UPePo7S1nTHBhNydM7cmVPzGRc="
+    crossorigin="anonymous"
+    type="text/css"
+  />
+  
+  <link rel="shortcut icon" href="/favicons/favicon.ico" type="image/x-icon" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicons/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicons/favicon-16x16.png" />
+
+  <link rel="canonical" href="https://example.com/post/2022-04-28-load-forecasting/load-forecasting/" />
+
+  
+  
+  
+  
+  <script
+    type="text/javascript"
+    src="/js/anatole-header.min.46e6a54097480084f8f52c20ca1aa7425b4fad17029a887fd4017b12e311a72d.js"
+    integrity="sha256-RualQJdIAIT49SwgyhqnQltPrRcCmoh/1AF7EuMRpy0="
+    crossorigin="anonymous"
+  ></script>
+
+  
+    
+    
+    <script
+      type="text/javascript"
+      src="/js/anatole-theme-switcher.min.5557c8ff5617a01067ac258fd70b9b992506e379317b0da51e5e0f6e018b408a.js"
+      integrity="sha256-VVfI/1YXoBBnrCWP1wubmSUG43kxew2lHl4PbgGLQIo="
+      crossorigin="anonymous"
+    ></script>
+
+  
+
+  
+
+
+  
+  <meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://example.com/images/site-feature-image.png"/>
+
+<meta name="twitter:title" content="Forecasting Energy Demand Using a Long Short-Term Memory Network"/>
+<meta name="twitter:description" content="An application of an LSTM network to a real-world time series problem"/>
+
+
+
+  
+  <meta property="og:title" content="Forecasting Energy Demand Using a Long Short-Term Memory Network" />
+<meta property="og:description" content="An application of an LSTM network to a real-world time series problem" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://example.com/post/2022-04-28-load-forecasting/load-forecasting/" /><meta property="og:image" content="https://example.com/images/site-feature-image.png"/><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2022-04-28T21:13:14-05:00" />
+<meta property="article:modified_time" content="2022-04-28T21:13:14-05:00" /><meta property="og:site_name" content="Margaret Sabelhaus" />
+
+
+
+
+  
+  
+  
+  
+  <script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "articleSection": "post",
+        "name": "Forecasting Energy Demand Using a Long Short-Term Memory Network",
+        "headline": "Forecasting Energy Demand Using a Long Short-Term Memory Network",
+        "alternativeHeadline": "",
+        "description": "
+      
+        An application of an LSTM network to a real-world time series problem
+
+
+      
+
+
+    ",
+        "inLanguage": "en",
+        "isFamilyFriendly": "true",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/example.com\/post\/2022-04-28-load-forecasting\/load-forecasting\/"
+        },
+        "author" : {
+            "@type": "Person",
+            "name": "Margaret Sabelhaus"
+        },
+        "creator" : {
+            "@type": "Person",
+            "name": "Margaret Sabelhaus"
+        },
+        "accountablePerson" : {
+            "@type": "Person",
+            "name": "Margaret Sabelhaus"
+        },
+        "copyrightHolder" : {
+            "@type": "Person",
+            "name": "Margaret Sabelhaus"
+        },
+        "copyrightYear" : "2022",
+        "dateCreated": "2022-04-28T21:13:14.00Z",
+        "datePublished": "2022-04-28T21:13:14.00Z",
+        "dateModified": "2022-04-28T21:13:14.00Z",
+        "publisher":{
+            "@type":"Organization",
+            "name": "Margaret Sabelhaus",
+            "url": "https://example.com",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https:\/\/example.com\/favicons\/favicon-32x32.png",
+                "width":"32",
+                "height":"32"
+            }
+        },
+        "image": 
+      [
+        
+        "https://example.com/images/site-feature-image.png"
+
+
+      
+      ]
+
+    ,
+        "url" : "https:\/\/example.com\/post\/2022-04-28-load-forecasting\/load-forecasting\/",
+        "wordCount" : "2157",
+        "genre" : [ 
+      
+      "Python"
+
+    ],
+        "keywords" : [ 
+      
+      "deep learning"
+
+    
+      
+        ,
+
+      
+      "LSTM"
+
+    
+      
+        ,
+
+      
+      "regression"
+
+    
+      
+        ,
+
+      
+      "forecasting"
+
+    ]
+    }
+  </script>
+
+
+
+</head>
+<body
+    
+      class="body theme--light"
+
+    
+  >
+    <div class="wrapper">
+      <aside
+        
+          class="wrapper__sidebar"
+
+        
+      ><div
+  class="sidebar
+    animated fadeInDown
+
+  "
+>
+  <div class="sidebar__content">
+    <div class="sidebar__introduction">
+      <img
+        class="sidebar__introduction-profileimage"
+        src="/images/profileMyImage.png"
+        alt="profile picture"
+      />
+      
+        <div class="sidebar__introduction-title">
+          <a href="/">Margaret Sabelhaus</a>
+        </div>
+
+      
+      <div class="sidebar__introduction-description">
+        <p>Data Scientist based in Denver, CO.</p>
+      </div>
+    </div>
+    <ul class="sidebar__list">
+      
+        <li class="sidebar__list-item">
+          <a href="https://www.linkedin.com/in/msabelhaus/" rel="me" aria-label="Linkedin" title="Linkedin">
+            <i class="fab fa-linkedin fa-2x" aria-hidden="true"></i>
+          </a>
+        </li>
+
+      
+        <li class="sidebar__list-item">
+          <a href="https://github.com/msabelhaus" rel="me" aria-label="GitHub" title="GitHub">
+            <i class="fab fa-github fa-2x" aria-hidden="true"></i>
+          </a>
+        </li>
+
+      
+        <li class="sidebar__list-item">
+          <a href="mailto:margaret.sabelhaus@gmail.com" rel="me" aria-label="e-mail" title="e-mail">
+            <i class="fas fa-envelope fa-2x" aria-hidden="true"></i>
+          </a>
+        </li>
+
+      
+    </ul>
+  </div><footer class="footer footer__sidebar">
+  <ul class="footer__list">
+    <li class="footer__item">
+      &copy;
+      
+        Margaret Sabelhaus
+        2022
+
+
+      
+    </li>
+    
+  </ul>
+</footer>
+  
+  <script
+    type="text/javascript"
+    src="/js/medium-zoom.min.fae9ac8895995fe91958b3954be11e96025824a04770726a3531e119ddd2d576.js"
+    integrity="sha256-&#43;umsiJWZX&#43;kZWLOVS&#43;EelgJYJKBHcHJqNTHhGd3S1XY="
+    crossorigin="anonymous"
+  ></script></div>
+</aside>
+      <main
+        
+          class="wrapper__main"
+
+        
+      >
+        <header class="header"><div
+  class="
+    animated fadeInDown
+
+  "
+>
+  <a role="button" class="navbar-burger" data-target="navMenu" aria-label="menu" aria-expanded="false">
+    <span aria-hidden="true" class="navbar-burger__line"></span>
+    <span aria-hidden="true" class="navbar-burger__line"></span>
+    <span aria-hidden="true" class="navbar-burger__line"></span>
+  </a>
+  <nav class="nav">
+    <ul class="nav__list" id="navMenu">
+      
+      
+      
+        
+        
+          <li class="nav__list-item">
+            <a
+              
+              href="/"
+              
+              title=""
+              >Home</a
+            >
+          </li>
+
+        
+
+
+      
+        
+        
+          <li class="nav__list-item">
+            <a
+              
+              href="/post/"
+              
+              title=""
+              >Posts</a
+            >
+          </li>
+
+        
+
+
+      
+        
+        
+          <li class="nav__list-item">
+            <a
+              
+              href="/about/"
+              
+              title=""
+              >About</a
+            >
+          </li>
+
+        
+
+
+      
+        
+        
+          <li class="nav__list-item">
+            <a
+              
+              href="/resume/"
+              
+              title=""
+              >Resume</a
+            >
+          </li>
+
+        
+
+
+      
+    </ul>
+    <ul class="nav__list nav__list--end">
+      
+      
+        <li class="nav__list-item">
+          <div class="themeswitch">
+            <a title="Switch Theme">
+              <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a>
+          </div>
+        </li>
+
+      
+    </ul>
+  </nav>
+</div>
+</header>
+  <div
+    class="post 
+      animated fadeInDown
+
+    "
+  >
+    
+    <div class="post__content">
+      <h1>Forecasting Energy Demand Using a Long Short-Term Memory Network</h1>
+      
+        <ul class="post__meta">
+          <li class="post__meta-item">
+            <em class="fas fa-calendar-day post__meta-icon"></em>
+            <span class="post__meta-text"
+              >
+                28/4/2022
+
+
+              
+            </span>
+          </li>
+          <li class="post__meta-item">
+            <em class="fas fa-stopwatch post__meta-icon"></em>
+            <span class="post__meta-text">11-minute read</span>
+          </li>
+        </ul>
+
+      
+
+
+<p>An application of an LSTM network to a real-world time series problem</p>
+<figure>
+<img src="/images/load-forecasting/headerImage.jpeg" alt="headerImage" style="width:100%;">
+<figcaption align="center">
+<b>Photo by <a href="https://pixabay.com/">Pixabay</a> on <a href="https://www.pexels.com/">Pexels</a></b>
+</figcaption>
+</figure>
+<p>I previously interned at a company that works in projects across the energy sector, where I developed an interest in energy demand (“load”) forecasting and its significance to various players within the energy market.</p>
+<p>For producers and grid operators, load forecasting is used to <a href="https://learn.pjm.com/three-priorities/planning-for-the-future/load-forecasting.aspx">help operate bulk electric systems and plan for updates</a>. Others use these predictions to decide on investment in new plants or equipment. In addition, load forecasting has become popular in more business-oriented markets such as financial planning and energy trading.</p>
+<p>Short-Term Load Forecasting (STLF) refers to energy forecasts within an interval of an hour to a week. I thought it would be an interesting challenge to focus on STLF - specifically to see if I could create a model to predict the next hour’s load given inputs from previous hours. I did so by creating a Long Short-Term Memory (LSTM) network, a type of neural network structure that works notoriously well for sequential data.</p>
+<p>In this article, I discuss this project from beginning to end. I touch on preprocessing, baseline model results, and the improved performance of my final LSTM network.</p>
+<p> </p>
+<div id="problem-and-approach" class="section level2">
+<h2>Problem and Approach</h2>
+<p>The datasets I worked with were a combination of publically-available information on weather and load for regions covered by ISO New England. I used hourly data from October 2018 to present, which at the time of this project constituted 3 years of data.</p>
+<p>Since the regions controlled by ISO-NE were likely to have different energy demands due to each area’s specific geographical attributes, I decided to simplify the problem by honing in on only one of the 8 regions. I selected the Connecticut ISO zone.</p>
+<figure>
+<img src="/images/load-forecasting/connecticutIsoZoneMap.jpeg" alt="connecticutIsoZoneMap" style="height: 400px; width:400px;">
+<figcaption align="center">
+<b>Photo by <a href="https://www.iso-ne.com/">ISO New England</a></b>
+</figcaption>
+</figure>
+<p>The challenge at hand was to see if I could accurately forecast one-hour-ahead load for the Connecticut ISO zone given past values of the features I had available. I quantified accuracy as the ability to outperform some baseline model, meaning it had a lower test error rate.</p>
+<p> </p>
+</div>
+<div id="difficulties-in-energy-forecasting" class="section level2">
+<h2>Difficulties in Energy Forecasting</h2>
+<p>Short-term load forecasting is notoriously difficult.</p>
+<p>It is a <strong>nonlinear</strong> problem. Commonly-used features such as temperature and humidity are not linearly related to the next hour’s load. This means many basic models are not equipt to produce accurate predictions.</p>
+<figure>
+<img src="/images/load-forecasting/temp_humid_scatter.png" alt="temp_humid_scatter" style="height: 500px; width:750px;">
+<figcaption align="center">
+<b>Average hourly load and temperature show nonlinear relationships with next hour’s load</b>
+</figcaption>
+</figure>
+<p>STLF additionally suffers from <strong>seasonality</strong>: the next hour’s load is dependent not only on the previous hour’s load, but also on the load at the same hour on the previous day, the same day in the previous week, and so on. </p>
+<p>The energy sector even has a name for these regular fluctuations in demand. “On-peak” hours refer to those when demand levels are highest (<a href="https://www.eia.gov/todayinenergy/detail.php?id=4190">typically between 7 am-10 pm on weekdays</a>), whereas demand is lower during “off-peak” times. These patterns are found seasonally, too, as demand in the summer/winter months is generally higher than in fall/spring.</p>
+<figure>
+<img src="/images/load-forecasting/oct_2020_ts.png" alt="oct_2020_ts" style="height: 500px; width:750px;">
+<figcaption align="center">
+<b>Hourly load fluctuates daily within a range of ~1500 Megawatts</b>
+</figcaption>
+</figure>
+<p>Finally, it is difficult to <strong>target periods of rapid fluctuation</strong>. Most standard statistic models are not flexible to rapid system load changes, which is problematic as these are times when accurate forecasts are especially needed.</p>
+<figure>
+<img src="/images/load-forecasting/oct10_19_ts.png" alt="oct10_19_ts" style="height: 500px; width:750px;">
+<figcaption align="center">
+<b></b>
+</figcaption>
+</figure>
+<p>The graph above shows the hourly load for the Connecticut ISO Zone on a randomly-chosen day. Notice how between the hours of 8:00 AM-12:00 PM the demand for energy follows a rapidly-changing, irregular path within a range of over 100 Megawatts.</p>
+<p>Neural networks can overcome these challenges due to their highly flexible structure. In particular, Long Short-Term Memory (LSTM) networks are widely known for their application in time series problems. The networks can handle nonlinear data, overcome seasonality effects, and do well in periods of high fluctuation. They additionally allow the input of multiple features of any type (as opposed to other common time series models).</p>
+<p> </p>
+</div>
+<div id="preprocessing" class="section level2">
+<h2>Preprocessing</h2>
+<p>After merging the data for average hourly temperature and load, I created my target variable - the load in the next hour.</p>
+<p>My next step involved creating new features that I believed may prove helpful in my model. To try and target the seasonality effects, I generated one-hot-encoded variables for whether the hour was on a holiday and for what season it was in. I then decided to incorporate more short-term regular trends by cyclically encoding both the hour and day of the week of each sample.</p>
+<p>Cyclical encoding involves normalizing one’s numerically-encoded features to match the 0–2π cycle and then finding the sine and cosine representations of each. This is often preferable to just having a feature with a range of 1–24 hours, as our neural networks aren’t smart enough to know that the hours ending in 1 and 24 are just one hour apart, not 23. Both sine and cosine representations are necessary because if we only were to use one, we run into an issue where two hours each day will have the same value. Again - our model isn’t smart enough to know that these are different times, and we run into problems.</p>
+<p>Finally, I created a one-hot-encoded feature for whether or not the hour was determined to be “on-peak.”</p>
+<p>My final dataset was as follows:</p>
+<figure>
+<img src="/images/load-forecasting/finaldf.png" alt="finaldf" style="width:100%;">
+<figcaption align="center">
+<b>Randomly-chosen hours and corresponding feature values in the initial dataset</b>
+</figcaption>
+</figure>
+<p> </p>
+</div>
+<div id="train-test-split" class="section level2">
+<h2>Train-Test Split</h2>
+<p>To quantify error I calculated both the Mean Absolute Error (MAE) and Mean Squared Error (MSE). I wanted to get a sense of the average error using the MAE and the overall error using the MSE. I did so by splitting my data set into training and test sets.</p>
+<p>The test set consisted of one week randomly chosen from each month in a calendar year. Weeks were taken from the most recent occurrences of each month in my data set.</p>
+<p> </p>
+</div>
+<div id="variable-selection" class="section level2">
+<h2>Variable Selection</h2>
+<p>Deciding what features to include in one’s final model can be a complicated task. I employed with two tools to get a sense of which features would be most influential in determining the next hour’s load.</p>
+<p>Tree-based methods have a nice quality in that they allow you to generate measures of feature importance. Feature importance assigns a score to each feature in a predictive model based on its relative significance in generating predictions. I calculated feature importances for all considered features using both random forest and boosted tree models. For the boosted tree I implemented XGBoost, a popular boosting algorithm.</p>
+<figure>
+<img src="/images/load-forecasting/feature_importance_1.png" alt="feature_importance_1" style="height: 300px; width:750px;">
+<figcaption align="center">
+<b>Feature importance calculated by tree-based models</b>
+</figcaption>
+</figure>
+<p>I ran these models on my training set. Both models indicated that LoadMW was the most influential feature, which is not surprising given the existing literature on energy forecasting. They also indicated slight importance in TempF and the two features that encoded the hour of the day (cos_HourE and sin_HourE). These importances were very small compared to LoadMW, so I decided to rerun the models without this dominant feature.</p>
+<figure>
+<img src="/images/load-forecasting/feature_importance_2.png" alt="feature_importance_2" style="height: 300px; width:750px;">
+<figcaption align="center">
+<b>Feature importance calculated by tree-based models after removing LoadMW</b>
+</figcaption>
+</figure>
+<p>After removing LoadMW, the random forest and boosted tree identified OnPeak to be important. The random forest also found TempF and the hour-encoded features to be influential. The boosted tree attributed more importance to OnPeak than TempF but still found the latter to be second-most important. This model also emphasized the importance of the hour-encoded features but surprisingly gave comparable importance to all of the seasonal features except for Summer.</p>
+<p>At this point, I was convinced that it may be worth including the features for load, temperature, hour, and on-peak/off-peak. The encoded features for the day of the week and whether or not it was a holiday showed minimal benefit, so I was doubtful that they would help. I was unsure about humidity and the seasonal variables given their significance in some models but not in others. As an additional check I calculated the correlation of each feature with the target, LoadMW_Plus1.</p>
+<figure>
+<img src="/images/load-forecasting/corr1_resize.png" alt="corr1_resize" style="height: 300px; width:300px;">
+<figcaption align="center">
+<b>Correlation of considered features with target</b>
+</figcaption>
+</figure>
+<p>As expected, cos_DOW, sin_DOW, and Holiday were barely correlated with LoadMW_Plus1. Summer and Spring showed some promise but Fall and Winter had a weak correlation. I dropped the first three features and created a new one-hot-encoded variable to replace the seasons - this was defined as 1 if the hour was in a warm month (spring/summer) and 0 for cool months (fall/winter).</p>
+<figure>
+<img src="/images/load-forecasting/corr2_resize.png" alt="corr2_resize" style="height: 200px; width:300px;">
+<figcaption align="center">
+<b>Correlation of considered features with targets after condensing seasonal variables</b>
+</figcaption>
+</figure>
+<p>After rerunning the correlation with LoadMW_Plus1 this new variable dropped to the bottom of the list. I therefore decided to consider the remaining features for modeling: LoadMW, OnPeak, sin_HourE, cos_HourE, TempF, and Humidity.</p>
+<p>In the end, my network performed best when using all six of these features.</p>
+<p> </p>
+</div>
+<div id="baseline-model" class="section level2">
+<h2>Baseline Model</h2>
+<p>I like to create a simple baseline model to compare the results of more flexible models against when one is not readily available. It is not always true that more complexity is associated with better results. Using a baseline model is a good way to tell if you are benefiting from using a neural network, or if all that time spent running epochs was a waste of time and computational power.</p>
+<p>I chose to keep things simple by fitting a multiple linear regression with the same features chosen for my final network.</p>
+<p>I trained and tested my model using the schema described above. The test resulted in an MAE of ~82 MW and an MSE of ~11,364 MW. This means that the multiple linear regression was off by around 82 megawatts per hour on average, and by around 11,364 megawatts² per hour on average.</p>
+<p>Note that this means the RMSE is about 106 megawatts. Since the RMSE gives a relatively high weight to larger errors compared to the MAE, this suggests that the model showed specific instances of very large error, which is unsurprising given the difficulty of modeling times of rapid fluctuation. These results were not ideal. I moved on to the LSTM framework to see if that model could perform better.</p>
+<p> </p>
+</div>
+<div id="long-short-term-memory-network" class="section level2">
+<h2>Long Short-Term Memory Network</h2>
+<p>LSTM models learn from a series of past observations of features to predict the next value of the target. This sequence has to be transformed into multiple input-output samples for it to be used by the model framework, which I did by adopting a function from <a href="https://machinelearningmastery.com/how-to-develop-lstm-models-for-time-series-forecasting/">machinelearningmastery</a>.</p>
+<p>After scaling the necessary features and my target I fed the training and test sets into said function. Multiple model runs showed that using the 9 most recent hours provided a nice balance of accurate results without garnering too high a computational cost.</p>
+<figure>
+<img src="/images/load-forecasting/inputs_output_resize.png" alt="inputs_output_resize" style="height: 300px; width:400px;">
+<figcaption align="center">
+<b>Input and output of the first training sample. Each list in the input corresponds to feature values from a previous timestep</b>
+</figcaption>
+</figure>
+<p>As with any neural network, there were many hyperparameters to consider when designing the architecture. I created a wide variety of models with various numbers of layers, nodes, activation functions, optimizers, batch sizes, and the number of epochs and kept track of the results. I additionally toyed with including dropout as a regularization method.</p>
+<figure>
+<img src="/images/load-forecasting/model_graph.png" alt="model_graph" style="height: 400px; width:400px;">
+<figcaption align="center">
+<b>Final LSTM model architecture</b>
+</figcaption>
+</figure>
+<p>The model that performed the best included two LSTM layers of 100 nodes each, relu activation functions, ADAM optimizer, and 50 epochs composed of 32 training samples. Using a regularization method actually worsened the performance of the network, so no dropout was included.</p>
+<figure>
+<img src="/images/load-forecasting/epoch_loss.png" alt="epoch_loss" style="height: 250px; width:750px;">
+<figcaption align="center">
+<b>Epoch versus loss function for the training and test set</b>
+</figcaption>
+</figure>
+<p>The network was able to reach convergence in the training data within 10–20 epochs and required additional epochs for the test set. The overall runtime was around 7 minutes, which is not bad for a rather complex model.</p>
+<p>The test resulted in an MAE of ~23 MW and an MSE of ~1,076 MW. This means that the LSTM model was off by around 23 megawatts per hour on average, and by around 1,076 megawatts² per hour on average. The RMSE is around 33 MW, still larger than the MAE. Thus we can infer that the LSTM also struggles to target those times of rapid fluctuation.</p>
+<figure>
+<img src="/images/load-forecasting/mlr_model_results.png" alt="mlr_model_results" style="height: 300px; width:750px;">
+<figcaption align="center">
+<b></b>
+</figcaption>
+</figure>
+<figure>
+<img src="/images/load-forecasting/lstm_model_results.png" alt="lstm_model_results" style="height: 300px; width:750px;">
+<figcaption align="center">
+<b></b>
+</figcaption>
+</figure>
+<p>The charts above show the predictions from the baseline Multiple Linear Regression model and those of the LSTM network. It is easy to see the improvement provided by the LSTM model. In fact, this improvement is rather significant: a 72% decrease in MAE and a 90.5% decrease in MSE.</p>
+<p> </p>
+</div>
+<div id="conclusion" class="section level2">
+<h2>Conclusion</h2>
+<p>In this article, I discussed my implementation of a Long Short-Term Memory network to forecast one-hour-ahead load for the Connecticut ISO zone. I achieved the goal I had set out for, which was to outperform some chosen baseline model.</p>
+<p>In the future, I would love to try and forecast load out for a longer period. Forecasting the next hour’s energy demand is useful, but in practice may be difficult to deploy in a timely manner. Having something like a 6-hour ahead forecast, or “load profile” as it’s often referred to, provides a more difficult challenge but would yield more useful results.</p>
+<hr />
+<p>Thank you all for reading! I hope you enjoyed seeing this real-world application of an LSTM model.</p>
+<p>The Python libraries used include Pandas, Matplotlib, Scikit-Learn, and Keras. For more information and to see the code, check out my <a href="https://github.com/msabelhaus/load-forecasting">GitHub repository</a>.</p>
+</div>
+</div>
+    <div class="post__footer">
+      
+        <span><a class="category" href="/categories/python/">Python</a></span>
+
+
+
+
+      
+
+      
+        <span><a class="tag" href="/tags/deep-learning/">deep learning</a><a class="tag" href="/tags/lstm/">LSTM</a><a class="tag" href="/tags/regression/">regression</a><a class="tag" href="/tags/forecasting/">forecasting</a></span>
+
+
+
+
+      
+    </div>
+
+    
+  </div>
+
+
+      </main>
+    </div><footer class="footer footer__base">
+  <ul class="footer__list">
+    <li class="footer__item">
+      &copy;
+      
+        Margaret Sabelhaus
+        2022
+
+
+      
+    </li>
+    
+  </ul>
+</footer>
+  
+  <script
+    type="text/javascript"
+    src="/js/medium-zoom.min.fae9ac8895995fe91958b3954be11e96025824a04770726a3531e119ddd2d576.js"
+    integrity="sha256-&#43;umsiJWZX&#43;kZWLOVS&#43;EelgJYJKBHcHJqNTHhGd3S1XY="
+    crossorigin="anonymous"
+  ></script></body>
+</html>
