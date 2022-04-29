@@ -20,3 +20,4 @@
   name = "Resume"
   weight = 400
   identifier = "resume"
+  url = "/resume/"
