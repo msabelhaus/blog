@@ -18,7 +18,7 @@ In this article, I present a brief overview of hierarchical clustering and show 
 ## Hierarchical Clustering
 
 ### The Dendrogram
-TTo understand hierarchical clustering is to understand the tree-like structure of the algorithm’s output, which we call the **dendrogram**.
+To understand hierarchical clustering is to understand the tree-like structure of the algorithm’s output, which we call the **dendrogram**.
 
 Clustering is built starting at the observation level, where each observation is considered its own cluster, and clustering up until we arrive at a single cluster that contains all the observations. This type of clustering is referred to as **bottom-up** or **agglomerative** clustering. As observations fuse together, the dendrogram forms **branches**, and every observation under a branch is considered to be in the same cluster.
 
