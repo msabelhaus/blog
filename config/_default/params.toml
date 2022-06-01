@@ -65,6 +65,11 @@ title = "GitHub"
 url = "https://github.com/msabelhaus"
 
 [[socialIcons]]
+icon = "fab fa-medium"
+title = "Medium"
+url = "https://medium.com/@margaret.sabelhaus"
+
+[[socialIcons]]
 icon = "fas fa-envelope"
 title = "e-mail"
 url = "mailto:margaret.sabelhaus@gmail.com"

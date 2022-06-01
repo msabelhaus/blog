@@ -1,0 +1,143 @@
+---
+title: "Introduction to Hierarchical Clustering in Python"
+author: "Margaret Sabelhaus"
+date: 2022-05-31T21:13:14-05:00
+output: html_document
+categories: ["Python"]
+tags: ["machine learning", "clustering", "python"]
+---
+
+
+
+<p>Clustering algorithms are used to find subgroups in data. They work by dividing observations such that those within each group are similar to one another and those in other groups are different. There are multiple applications for clustering, but these algorithms are most commonly used as an unsupervised learning technique to find some underlying structure in unlabeled data.</p>
+<p>While there are numerous clustering algorithms every Data Scientist should be familiar with, I find that <strong>hierarchical</strong> clustering is the easiest to interpret due to its tree-like representation. Therefore, it is a great first clustering algorithm to learn before diving into the multitude of others.</p>
+<p>In this article, I present a brief overview of hierarchical clustering and show how to implement it in Python using synthetic data.</p>
+<p> </p>
+<div id="hierarchical-clustering" class="section level2">
+<h2>Hierarchical Clustering</h2>
+<div id="the-dendrogram" class="section level3">
+<h3>The Dendrogram</h3>
+<p>TTo understand hierarchical clustering is to understand the tree-like structure of the algorithm’s output, which we call the <strong>dendrogram</strong>.</p>
+<p>Clustering is built starting at the observation level, where each observation is considered its own cluster, and clustering up until we arrive at a single cluster that contains all the observations. This type of clustering is referred to as <strong>bottom-up</strong> or <strong>agglomerative</strong> clustering. As observations fuse together, the dendrogram forms <strong>branches</strong>, and every observation under a branch is considered to be in the same cluster.</p>
+<figure>
+<img src="/images/hierarchical-clustering/dendrogram.png" alt="dendrogram" style="height: 400px; width:600px;">
+<figcaption align="center">
+<b>Image of an example dendrogram</b>
+</figcaption>
+</figure>
+<p>We assign the final clusters based on where we horizontally cut across the dendrogram: where the observations fall under the resulting branches make up the cluster assignments. Note that this means that we can have multiple numbers of cluster assignments depending on where we make the cut. This is an attractive feature of hierarchical clustering — unlike other clustering algorithms like the commonly-used k-Means algorithm, it does not require we assign the number of clusters ahead of time.</p>
+<figure>
+<img src="/images/hierarchical-clustering/dendrogram_cuts.png" alt="dendrogram_cuts" style="height: 400px; width:600px;">
+<figcaption align="center">
+<b></b>
+</figcaption>
+</figure>
+<p>In the above dendrogram we make two different horizontal cuts which result in two different clustering assignments. The solid black line produces 3 clusters that consist of observations {5,1,2}, {0,3,8}, and {7,9,4,6}. The dashed black line produces 2 clusters that consist of observations {5,1,2} and {0,3,8,7,9,4,6}.</p>
+<p>We can sense how similar observations (and groups of observations) are by seeing where on the dendrogram they fuse. This is done by looking at the vertical axis — observations that fuse lower in the tree are most similar, and those that fuse higher in the tree are least similar. For example, observations 1 and 2 are more similar than observations 1 and 5 since they fuse together at a lower point on the vertical axis.</p>
+<p>It is important to emphasize that we use the vertical axis to measure similarity — the horizontal axis is meaningless in this algorithm. This is an easy point of confusion.</p>
+</div>
+<div id="similarity" class="section level3">
+<h3>Similarity</h3>
+<p>We’ve talked about how this algorithm clusters observations based on how similar they are. But what does “similar” mean in this context?</p>
+<p>We can choose to define this as one of multiple dissimilarity measures — put simply, these are numerical measures of how different two observations are. Like other algorithms that require a measurement of similarity, it is common to pick Euclidean distance. If you haven’t taken linear algebra, this is just the distance of the line between two points.</p>
+<figure>
+<img src="/images/hierarchical-clustering/euclideanDistance.png" alt="euclideanDistance" style="height: 200px; width:650px;">
+<figcaption align="center">
+<b></b>
+</figcaption>
+</figure>
+<p>However, things get more complicated when the clusters start to grow. We can calculate the Euclidean distance between two points, so this works when we first fuse together individual observations. But how do we define the similarity of one observation with a cluster of two observations? Or of two clusters, each containing multiple observations? Here we must develop the idea of <strong>linkage</strong>, which warrants its own post and will be discussed in a future article.</p>
+</div>
+<div id="evaluation-metrics" class="section level3">
+<h3>Evaluation Metrics</h3>
+<p>When we do not know the ground truth of our data, evaluating the “goodness” of an algorithm is a difficult task. Recall that our goal here is to determine the optimal number of clusters such that the observations within each cluster are similar, and across each cluster are different. There are multiple metrics that can be used — here I discuss the <strong>silhouette score</strong>.</p>
+<p>The silhouette score is a number between -1 and 1 that measures the quality of clusters based on how similar the observations within a cluster are compared to other clusters.</p>
+<p>For each observation i, we calculate the ratio of (b-a)/max(a,b), where a is the distance to the assigned cluster center and b is the distance to the second best cluster center. We then average the results across all observations.</p>
+<p>Thus, the silhouette score is interpreted as follows:</p>
+<ul>
+<li>1: clusters are correctly assigned</li>
+<li>0: clusters are overlapping and samples are close to the decision boundary, indicating clustering may not be an appropriate technique</li>
+<li>-1: clusters are incorrectly assigned</li>
+</ul>
+<p> </p>
+</div>
+</div>
+<div id="python-implementation" class="section level2">
+<h2>Python Implementation</h2>
+<p>For this example we will use create synthetic clusters and use a dendrogram to examine the results of hierarchical clustering. First, load in the necessary libraries and create the synthetic clusters using scikit-learn’s make_blobs function:</p>
+<pre><code># Libraries
+from sklearn.datasets import make_blobs
+import matplotlib.pyplot as plt
+from scipy.cluster.hierarchy import dendrogram, linkage, fcluster
+from sklearn.metrics import silhouette_score
+plt.style.use(&quot;seaborn&quot;)
+
+# Create synthetic clusters
+X, y = make_blobs(n_samples=50, centers=2, n_features=2, cluster_std=2, random_state=123)
+
+# Plot
+plt.scatter(X[:,0], X[:,1], c=y, cmap=&#39;rainbow&#39;)
+plt.title(&quot;True cluster labels&quot;)
+plt.xlabel(&quot;x0&quot;)
+plt.ylabel(&quot;x1&quot;)
+plt.show()</code></pre>
+<figure>
+<img src="/images/hierarchical-clustering/true_clusters.png" alt="true_clusters" style="height: 400px; width:600px;">
+<figcaption align="center">
+<b>Observations colored by true cluster assignment</b>
+</figcaption>
+</figure>
+<p>We created 50 random observations with 2 features (x0, x1) that fall into two clusters.</p>
+<p>Next we use scipy’s <code>dendrogram</code> function to generate a dendrogram for this data. Note that we are required to set a linkage criterion to do so — I use complete linkage (again, you can ignore this for now as it requires a more in-depth explanation).</p>
+<pre><code># Assign linkage
+Z = linkage(X, &#39;complete&#39;)
+
+plt.figure(figsize=(10, 8))
+plt.title(&#39;Example dendrogram&#39;)
+plt.xlabel(&#39;sample index&#39;)
+plt.ylabel(&#39;distance&#39;)
+dendrogram(
+    Z,
+    leaf_font_size=8.,
+)
+plt.show()</code></pre>
+<figure>
+<img src="/images/hierarchical-clustering/ex_dendrogram.png" alt="ex_dendrogram" style="height: 600px; width:800px;">
+<figcaption align="center">
+<b></b>
+</figcaption>
+</figure>
+<p>The dendrogram shows how our synthetic data points fuse as we cluster up. This can be interpretted similarly as before — for example, observations 25 and 37 fuse at a higher distance than observations 27 and 33. Thus, we can infer that observations 25 and 37 are less similar than observations 27 and 33.</p>
+<p>We can see how making horizontal cuts at different distances will produce different numbers of clusters. To get a sense of what number of clusters is “best”, we can loop through a number of different cluster assignments and calculate the silhouette score for each.</p>
+<pre><code>def sil_scores(X, Z, ts):
+    &#39;&#39;&#39;
+    Creates a list of silhouette scores for a predetermined range of clusters.
+    &#39;&#39;&#39;
+    scores = []
+    
+    for num_clust in ts:
+        scores.append(silhouette_score(X, fcluster(Z, t=num_clust, criterion=&#39;maxclust&#39;)))
+    
+    return scores
+
+scores = sil_scores(X, Z, range(2,6))
+
+for t, s in zip(ts, scores):
+    print(f&quot;With {t} clusters, the silhouette score is {s}&quot;)</code></pre>
+<p>Output:</p>
+<pre><code>With 2 clusters, the silhouette score is 0.6079858739669028
+With 3 clusters, the silhouette score is 0.4762291173724404
+With 4 clusters, the silhouette score is 0.34406368572313434
+With 5 clusters, the silhouette score is 0.33854835035406317</code></pre>
+<p>The silhouette score is highest when there are two cluster assignments — which happens to be the correct number. Great!</p>
+<p>Finally, we can easily find which clusters each observation is assigned to using scipy’s <code>fcluster</code> function, which we already used in the prior code block. This function essentially flattens the dendrogram where it is cut to produce the requested number of clusters (here we choose 2) and returns an array of cluster assignments:</p>
+<pre><code>fcluster(Z, t=2, criterion=&#39;maxclust&#39;)</code></pre>
+<p>Output:</p>
+<p><code>array([2, 1, 2, 2, 1, 2, 2, 2, 1, 2, 2, 1, 2, 2, 1, 1, 1, 1, 2, 2, 2, 2,        2, 2, 1, 1, 1, 1, 2, 1, 1, 1, 2, 1, 2, 1, 1, 1, 2, 2, 2, 2, 1, 1,        1, 1, 1, 2, 2, 1], dtype=int32)</code></p>
+<p>And that’s about it! When dealing with actual data, we could then use these cluster assignments for whatever purposes we see fit.</p>
+</div>
+<div id="conclusion" class="section level2">
+<h2>Conclusion</h2>
+<p>In this article I discussed the basics of hierarchical clustering and demonstrated how to perform this algorithm in Python. I touched on using the dendrogram to evaluate clusters, how the algorithm determines cluster assignments, and using the silhouette score to measure the “goodness” of the resulting clusters.</p>
+<p>I hope that this was a helpful tutorial and that you can use this technique in your own work. To see the full code used to produce the output, check out the associated <a href="https://github.com/msabelhaus/tutorials/blob/main/hierarchicalClustering/hierarchicalClustering.ipynb">Jupyter notebook</a> file in my GitHub.</p>
+</div>
